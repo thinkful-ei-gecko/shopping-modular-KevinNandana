@@ -1,8 +1,8 @@
 'use strict';
-/* global Store */
+/* global Store, Item */
 
 // eslint-disable-next-line no-unused-vars
-const shoppingList = (function(){
+const shoppingList = (function() {
 
   function generateItemElement(item) {
     let itemTitle = `<span class="shopping-item shopping-item__checked">${item.name}</span>`;
@@ -26,15 +26,13 @@ const shoppingList = (function(){
           </button>
         </div>
       </li>`;
-  }
-  
+  }  
   
   function generateShoppingItemsString(shoppingList) {
     const items = shoppingList.map((item) => generateItemElement(item));
     return items.join('');
   }
-  
-  
+   
   function render() {
     // Filter item list if store prop is true by item.checked === false
     let items = [ ...Store.items ];
@@ -55,17 +53,15 @@ const shoppingList = (function(){
     $('.js-shopping-list').html(shoppingListItemsString);
   }
   
-  
   function addItemToShoppingList(itemName) {
-    try{
+    try {
       Item.validateName(itemName);
       let newItem=Item.create(itemName);
       Store.items.push(newItem);
     }
-    catch(e){
+    catch(e) {
       console.log(`'Cannot add item: ${e.message}`);
-    }
-    
+    }   
   }
   
   function handleNewItemSubmit() {
@@ -92,14 +88,6 @@ const shoppingList = (function(){
     });
   }
   
-  function toggleCheckedItemsFilter() {
-    Store.hideCheckedItems = !Store.hideCheckedItems;
-  }
-  
-  function setSearchTerm(val) {
-    Store.searchTerm = val;
-  }
-  
   function handleDeleteItemClicked() {
     // like in `handleItemCheckClicked`, we use event delegation
     $('.js-shopping-list').on('click', '.js-item-delete', event => {
@@ -124,7 +112,7 @@ const shoppingList = (function(){
   
   function handleToggleFilterClick() {
     $('.js-filter-checked').click(() => {
-      toggleCheckedItemsFilter();
+      Store.toggleCheckedFilter();
       render();
     });
   }
@@ -132,7 +120,7 @@ const shoppingList = (function(){
   function handleShoppingListSearch() {
     $('.js-shopping-list-search-entry').on('keyup', event => {
       const val = $(event.currentTarget).val();
-      setSearchTerm(val);
+      Store.setSearchTerm(val);
       render();
     });
   }
