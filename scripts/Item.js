@@ -1,12 +1,14 @@
 'use strict';
 /* global cuid*/
-const Item = (function(){
+
+const Item = (function() {
   function validateName(name){
-    if((name === '')){
+    if((name === '')) {
       throw TypeError('Name does not exist');
     }
   }
-  function create(name){
+  
+  function create(name) {
     return {
       id:cuid(),
       name:name,
@@ -15,7 +17,7 @@ const Item = (function(){
     };
   }
 
-  return{
+  return {
     validateName,
     create
   };

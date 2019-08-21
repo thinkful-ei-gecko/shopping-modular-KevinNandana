@@ -1,10 +1,8 @@
 /* eslint-disable no-unused-vars */
-/* global cuid */
+/* global cuid, Item */
 'use strict';
 
-const store = (function() {
-  
-
+const Store = (function() {
   const items = [
     { id: cuid(), name: 'apples', checked: false },
     { id: cuid(), name: 'oranges', checked: false },
@@ -13,38 +11,43 @@ const store = (function() {
   ];
   const hideCheckedItems = false;
   const searchTerm = '';
-  function findById(id){
+
+  function findById(id) {
     return this.items.find(item => item.id === id);
   }
-  function addItem(name){
-    try{
+
+  function addItem(name) {
+    try {
       Item.validateName(name);
       let newItem = Item.create(name);
       this.items.push(newItem);
     }
-    catch(e){
+    catch(e) {
       console.log(e.message);
     }
   }
-  function findAndToggleChecked(id){
-    let item=this.findById(id);
-    item.checked=!item.checked;
+
+  function findAndToggleChecked(id) {
+    let item = this.findById(id);
+    item.checked = !item.checked;
   }
-  function findAndUpdateName(id,name){
-    try{
+
+  function findAndUpdateName(id,name) {
+    try {
       Item.validateName(name);
-      let item=this.findById(id);
-      item.name=name;
+      let item = this.findById(id);
+      item.name = name;
     }
-    catch(e){
+    catch(e) {
       console.log(`Can not update name ${e.message}`);
     }
   }
 
   function findAndDelete(id){
-    let itemToRemove=this.findById(id);
-    this.items=this.items.filter(item=>item!==itemToRemove);
+    let itemToRemove = this.findById(id);
+    this.items = this.items.filter(item => item !== itemToRemove);
   }
+
   return {
     items,
     hideCheckedItems,
